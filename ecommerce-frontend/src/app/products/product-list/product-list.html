@@ -1,0 +1,55 @@
+<div class="page-container fade-in">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">🏷️ Produits</h2>
+            <p class="page-description">Gérez votre catalogue de produits</p>
+        </div>
+        <a routerLink="/products/add" class="btn-add">
+            <span class="btn-icon">➕</span>
+            Ajouter un produit
+        </a>
+    </div>
+
+    <div class="product-grid grid-3">
+        <div *ngFor="let p of products; let i = index" class="product-card" [style.animation-delay.ms]="i * 80">
+            <div class="product-badge">
+                <span class="category-badge">{{ p.category?.name || 'Sans catégorie' }}</span>
+            </div>
+
+            <div class="product-icon">🏷️</div>
+
+            <div class="product-info">
+                <h3 class="product-name">{{ p.name }}</h3>
+
+                <div class="product-meta">
+                    <div class="price-container">
+                        <span class="price">{{ p.price }} MAD</span>
+                    </div>
+
+                    <div class="stock-container">
+                        <span class="stock-badge" [class.low-stock]="p.stock < 20" [class.high-stock]="p.stock >= 20">
+                            <span class="stock-icon">📦</span>
+                            {{ p.stock }} en stock
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button (click)="edit(p.id!)" class="btn-edit">
+                    <span>✏️</span> Modifier
+                </button>
+                <button (click)="delete(p.id)" class="btn-danger btn-delete">
+                    <span>🗑️</span> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="products.length === 0" class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h3>Aucun produit trouvé</h3>
+        <p>Commencez par ajouter votre premier produit</p>
+        <a routerLink="/products/add" class="btn-primary">Ajouter un produit</a>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="app-wrapper">
+  <header class="app-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1 class="text-gradient">🛍️ E-commerce</h1>
+          <p class="subtitle">Premium Shopping Experience</p>
+        </div>
+        
+        <nav class="main-nav">
+          <a routerLink="/categories" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">📂</span>
+            Catégories
+          </a>
+          <a routerLink="/products" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">🏷️</span>
+            Produits
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content container">
+    <router-outlet></router-outlet>
+  </main>
+
+  <div class="background-decoration">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+</div>

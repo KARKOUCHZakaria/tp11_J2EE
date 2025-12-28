@@ -1,0 +1,41 @@
+<div class="form-container fade-in">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">{{ isEditMode ? '✏️ Modifier la catégorie' : '➕ Ajouter une catégorie' }}</h2>
+      <p class="form-subtitle">{{ isEditMode ? 'Modifiez les informations de la catégorie' : 'Créez une nouvelle
+        catégorie de produits' }}</p>
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="styled-form">
+      <div class="form-group">
+        <label for="name" class="form-label">
+          <span class="label-icon">📝</span>
+          Nom de la catégorie *
+        </label>
+        <input type="text" id="name" formControlName="name" class="form-input"
+          placeholder="Ex: Électronique, Vêtements, Livres...">
+        <div *ngIf="categoryForm.get('name')?.invalid && categoryForm.get('name')?.touched" class="error-message">
+          ⚠️ Le nom est obligatoire
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="form-label">
+          <span class="label-icon">📄</span>
+          Description
+        </label>
+        <textarea id="description" formControlName="description" rows="4" class="form-input"
+          placeholder="Décrivez cette catégorie..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="cancel()" class="btn-secondary">
+          ❌ Annuler
+        </button>
+        <button type="submit" [disabled]="categoryForm.invalid" class="btn-primary">
+          💾 Enregistrer
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

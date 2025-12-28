@@ -1,0 +1,337 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages essentiels
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+
+% Configuration de la page
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=3cm,
+    bottom=3cm
+}
+
+% Configuration des liens
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+}
+
+% Configuration du code
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+}
+
+\begin{document}
+
+% ============================================
+% PAGE DE GARDE
+% ============================================
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\LARGE \textbf{ÉCOLE MAROCAINE DES SCIENCES DE L'INGÉNIEUR}}\\[0.5cm]
+    {\Large MARRAKECH}\\[3cm]
+    
+    {\huge \textbf{Compte Rendu TP11}}\\[0.5cm]
+    {\LARGE Application E-commerce}\\[0.3cm]
+    {\Large Spring Boot + Angular + Docker}\\[3cm]
+    
+    \begin{tabular}{rl}
+        \textbf{Réalisé par:} & Karkouch Zakaria \\[0.3cm]
+        \textbf{Filière:} & Génie Informatique \\[0.3cm]
+        \textbf{Année:} & 2025-2026 \\
+    \end{tabular}
+    
+    \vfill
+    
+\end{titlepage}
+
+% ============================================
+% INTRODUCTION
+% ============================================
+\section{Introduction}
+
+Ce TP consiste à développer une application e-commerce complète avec une architecture moderne utilisant:
+\begin{itemize}
+    \item \textbf{Backend:} Spring Boot 3.5.8 avec API REST
+    \item \textbf{Frontend:} Angular 21
+    \item \textbf{Base de données:} MySQL 8.0
+    \item \textbf{Containerisation:} Docker et Docker Compose
+\end{itemize}
+
+L'application permet la gestion complète de catégories et produits avec les opérations CRUD (Create, Read, Update, Delete).
+
+% ============================================
+% ARCHITECTURE
+% ============================================
+\section{Architecture de l'Application}
+
+\subsection{Architecture Globale}
+L'application suit une architecture trois tiers:
+\begin{enumerate}
+    \item \textbf{Frontend} - Interface utilisateur Angular (Port 80)
+    \item \textbf{Backend} - API REST Spring Boot (Port 8080)
+    \item \textbf{Base de données} - MySQL (Port 3306)
+    \item \textbf{Administration} - phpMyAdmin (Port 8081)
+\end{enumerate}
+
+\subsection{Technologies Utilisées}
+
+\textbf{Backend Spring Boot:}
+\begin{itemize}
+    \item Spring Data JPA - Persistance des données
+    \item Spring Web - API REST
+    \item MySQL Connector
+    \item Lombok
+\end{itemize}
+
+\textbf{Frontend Angular:}
+\begin{itemize}
+    \item Angular Router - Navigation
+    \item Angular Forms - Formulaires
+    \item RxJS - Programmation réactive
+\end{itemize}
+
+% ============================================
+% IMPLEMENTATION
+% ============================================
+\section{Implémentation}
+
+\subsection{Modèle de Données}
+
+Deux entités principales:
+
+\textbf{Category:}
+\begin{lstlisting}[language=Java]
+@Entity
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String description;
+    
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+}
+\end{lstlisting}
+
+\textbf{Product:}
+\begin{lstlisting}[language=Java]
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String description;
+    private Double price;
+    private Integer quantity;
+    
+    @ManyToOne
+    private Category category;
+}
+\end{lstlisting}
+
+\subsection{API REST}
+
+Les endpoints principaux:
+\begin{itemize}
+    \item \texttt{GET /api/categories} - Liste des catégories
+    \item \texttt{POST /api/categories} - Créer une catégorie
+    \item \texttt{PUT /api/categories/\{id\}} - Modifier une catégorie
+    \item \texttt{DELETE /api/categories/\{id\}} - Supprimer une catégorie
+    \item \texttt{GET /api/products} - Liste des produits
+    \item \texttt{POST /api/products} - Créer un produit
+    \item \texttt{PUT /api/products/\{id\}} - Modifier un produit
+    \item \texttt{DELETE /api/products/\{id\}} - Supprimer un produit
+\end{itemize}
+
+\subsection{Docker Compose}
+
+Configuration de 4 services:
+\begin{lstlisting}[language=yaml]
+services:
+  db:           # MySQL 8.0
+  backend:      # Spring Boot
+  frontend:     # Angular + Nginx
+  phpmyadmin:   # Administration MySQL
+\end{lstlisting}
+
+Commandes:
+\begin{lstlisting}[language=bash]
+# Demarrer l'application
+docker-compose up --build
+
+# Arreter l'application
+docker-compose down
+\end{lstlisting}
+
+% ============================================
+% CAPTURES D'ÉCRAN
+% ============================================
+\section{Captures d'Écran}
+
+\subsection{Docker - Services en Exécution}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{docker_containers.png}
+    \caption{Conteneurs Docker en cours d'exécution}
+\end{figure}
+
+\subsection{Gestion des Catégories}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{categories_list.png}
+    \caption{Interface de gestion des catégories}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{category_form.png}
+    \caption{Formulaire de catégorie}
+\end{figure}
+
+\subsection{Gestion des Produits}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{products_list.png}
+    \caption{Interface de gestion des produits}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{product_form.png}
+    \caption{Formulaire de produit}
+\end{figure}
+
+\subsection{Base de Données}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{phpmyadmin.png}
+    \caption{Base de données MySQL dans phpMyAdmin}
+\end{figure}
+
+\subsection{Tests API avec Swagger}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{swagger_ui.png}
+    \caption{Documentation et test des endpoints API avec Swagger UI}
+\end{figure}
+
+% ============================================
+% RÉSULTATS
+% ============================================
+\section{Résultats}
+
+\subsection{Fonctionnalités Réalisées}
+\begin{itemize}
+    \item[$\checkmark$] CRUD complet pour les catégories
+    \item[$\checkmark$] CRUD complet pour les produits
+    \item[$\checkmark$] Relation entre catégories et produits
+    \item[$\checkmark$] Interface utilisateur responsive
+    \item[$\checkmark$] API REST fonctionnelle
+    \item[$\checkmark$] Containerisation avec Docker
+    \item[$\checkmark$] Persistance des données avec MySQL
+\end{itemize}
+
+\subsection{Services Accessibles}
+\begin{itemize}
+    \item Application Angular: \url{http://localhost}
+    \item API Backend: \url{http://localhost:8080}
+    \item phpMyAdmin: \url{http://localhost:8081}
+\end{itemize}
+
+% ============================================
+% LIEN GITHUB
+% ============================================
+\section{Dépôt GitHub}
+
+Le code source complet de ce projet est disponible sur GitHub:
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{
+    \centering
+    \vspace{0.5cm}
+    {\Large \textbf{Lien GitHub}}\\
+    \vspace{0.5cm}
+    \url{https://github.com/votre-username/ecommerce-tp11}\\
+    \vspace{0.3cm}
+    \textit{(Remplacer par le lien réel de votre dépôt)}
+    \vspace{0.5cm}
+}}
+\end{center}
+
+% ============================================
+% CONCLUSION
+% ============================================
+\section{Conclusion}
+
+Ce TP a permis de développer une application e-commerce complète en utilisant les technologies modernes du développement web. L'utilisation de Spring Boot pour le backend, Angular pour le frontend et Docker pour la containerisation démontre une architecture professionnelle et scalable.
+
+\subsection{Compétences Acquises}
+\begin{itemize}
+    \item Développement d'API REST avec Spring Boot
+    \item Utilisation de JPA/Hibernate pour la persistance
+    \item Développement frontend avec Angular
+    \item Containerisation avec Docker
+    \item Gestion de bases de données MySQL
+    \item Architecture trois tiers
+\end{itemize}
+
+% ============================================
+% ANNEXE
+% ============================================
+\section{Annexe - Commandes Utiles}
+
+\subsection{Docker}
+\begin{lstlisting}[language=bash]
+# Lancer l'application
+docker-compose up -d
+
+# Voir les logs
+docker-compose logs -f
+
+# Arreter l'application
+docker-compose down
+
+# Supprimer les volumes
+docker-compose down -v
+\end{lstlisting}
+
+\subsection{Maven (Backend)}
+\begin{lstlisting}[language=bash]
+# Compiler
+mvn clean package
+
+# Lancer
+mvn spring-boot:run
+\end{lstlisting}
+
+\subsection{Angular (Frontend)}
+\begin{lstlisting}[language=bash]
+# Installer les dependances
+npm install
+
+# Lancer en dev
+npm start
+
+# Build production
+npm run build
+\end{lstlisting}
+
+\end{document}

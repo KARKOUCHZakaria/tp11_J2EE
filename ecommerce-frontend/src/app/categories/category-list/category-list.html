@@ -1,0 +1,37 @@
+<div class="page-container fade-in">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">📂 Catégories</h2>
+      <p class="page-description">Gérez vos catégories de produits</p>
+    </div>
+    <a routerLink="/categories/add" class="btn-add">
+      <span class="btn-icon">➕</span>
+      Ajouter une catégorie
+    </a>
+  </div>
+
+  <div class="category-grid grid-3">
+    <div *ngFor="let c of categories; let i = index" class="category-card" [style.animation-delay.ms]="i * 100">
+      <div class="card-icon">📂</div>
+      <div class="card-content">
+        <h3 class="category-name">{{ c.name }}</h3>
+        <p class="category-description">{{ c.description || 'Aucune description' }}</p>
+      </div>
+      <div class="card-actions">
+        <button (click)="edit(c.id!)" class="btn-edit">
+          <span>✏️</span> Modifier
+        </button>
+        <button (click)="delete(c.id)" class="btn-danger btn-delete">
+          <span>🗑️</span> Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="categories.length === 0" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h3>Aucune catégorie trouvée</h3>
+    <p>Commencez par ajouter votre première catégorie</p>
+    <a routerLink="/categories/add" class="btn-primary">Ajouter une catégorie</a>
+  </div>
+</div>

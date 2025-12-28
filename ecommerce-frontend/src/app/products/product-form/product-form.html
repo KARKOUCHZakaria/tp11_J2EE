@@ -1,0 +1,74 @@
+<div class="form-container fade-in">
+    <div class="form-card">
+        <div class="form-header">
+            <h2 class="form-title">{{ isEditMode ? '✏️ Modifier le produit' : '➕ Ajouter un produit' }}</h2>
+            <p class="form-subtitle">{{ isEditMode ? 'Modifiez les informations du produit' : 'Ajoutez un nouveau
+                produit à votre catalogue' }}</p>
+        </div>
+
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="styled-form">
+            <div class="form-group">
+                <label for="name" class="form-label">
+                    <span class="label-icon">📝</span>
+                    Nom du produit *
+                </label>
+                <input type="text" id="name" formControlName="name" class="form-input"
+                    placeholder="Ex: iPhone 15 Pro, Laptop Dell XPS...">
+                <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="error-message">
+                    ⚠️ Le nom est obligatoire
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price" class="form-label">
+                        <span class="label-icon">💰</span>
+                        Prix (MAD) *
+                    </label>
+                    <input type="number" id="price" formControlName="price" step="0.01" class="form-input"
+                        placeholder="0.00">
+                    <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+                        class="error-message">
+                        ⚠️ Le prix doit être positif
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock" class="form-label">
+                        <span class="label-icon">📦</span>
+                        Stock *
+                    </label>
+                    <input type="number" id="stock" formControlName="stock" class="form-input" placeholder="0">
+                    <div *ngIf="productForm.get('stock')?.invalid && productForm.get('stock')?.touched"
+                        class="error-message">
+                        ⚠️ Le stock doit être positif
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="categoryId" class="form-label">
+                    <span class="label-icon">📂</span>
+                    Catégorie *
+                </label>
+                <select id="categoryId" formControlName="categoryId" class="form-input">
+                    <option value="">-- Sélectionner une catégorie --</option>
+                    <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                </select>
+                <div *ngIf="productForm.get('categoryId')?.invalid && productForm.get('categoryId')?.touched"
+                    class="error-message">
+                    ⚠️ La catégorie est obligatoire
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" (click)="cancel()" class="btn-secondary">
+                    ❌ Annuler
+                </button>
+                <button type="submit" [disabled]="productForm.invalid" class="btn-primary">
+                    💾 Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
